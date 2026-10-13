@@ -30,3 +30,6 @@ biometria.blob
 
 # O site de privacidade tem repositório próprio (RKXP-Software/vault-site)
 site/
+
+# Instaladores gerados (binários grandes; contêm as credenciais do Google embutidas)
+distribuicao/

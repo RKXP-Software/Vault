@@ -39,6 +39,19 @@ npm run tauri dev     # app Windows
 npx tauri android build --debug --apk --target aarch64   # APK de teste (interface embutida)
 ```
 
+## Instaladores
+
+```
+npm run instalador   # Windows (NSIS) → distribuicao/v<versão>/Vault-<versão>-Windows-Instalador.exe
+npm run apk          # Android (APK assinado, arm64) → distribuicao/v<versão>/Vault-<versão>-Android.apk
+```
+
+- Os dois levam as credenciais do Google embutidas (`src-tauri/google.secret.json`): quem instalar consegue extraí-las.
+  Para apps instalados o Google trata esse segredo como não confidencial, mas use credenciais próprias em builds públicos.
+- A chave de assinatura do APK é criada na primeira vez em `%USERPROFILE%\.vaultault-release.jks` (senha em
+  `src-tauri/gen/android/keystore.properties`, fora do git). **Guarde uma cópia**: sem ela não dá para atualizar o app instalado.
+- Um APK de release (chave própria) não instala por cima de um APK de depuração: desinstale o de depuração antes.
+
 ## Extensão do navegador (Chrome/Edge)
 
 Independente do app: baixa o `cofre.vault` do Drive, abre no navegador com o mesmo núcleo em Rust

@@ -12,6 +12,8 @@
     "typecheck": "tsc --noEmit",
     "icon": "node scripts/gerar-icone.mjs",
     "ext:build": "node scripts/build-extension.mjs",
+    "instalador": "node scripts/instalador.mjs",
+    "apk": "node scripts/apk.mjs",
     "ext:test": "node --test extension/test/lib.test.mjs",
     "test:core": "cargo test --manifest-path core/Cargo.toml"
   },
