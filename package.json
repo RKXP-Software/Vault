@@ -1,0 +1,28 @@
+{
+  "name": "vault",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Cofre de senhas cifrado para Windows e Android",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "typecheck": "tsc --noEmit",
+    "icon": "node scripts/gerar-icone.mjs",
+    "ext:build": "node scripts/build-extension.mjs",
+    "ext:test": "node --test extension/test/lib.test.mjs",
+    "test:core": "cargo test --manifest-path core/Cargo.toml"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-barcode-scanner": "^2.4.6"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "@tauri-apps/cli": "^2",
+    "typescript": "~6.0.3",
+    "vite": "^8.0.16"
+  }
+}

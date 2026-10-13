@@ -1,0 +1,32 @@
+node_modules
+dist
+target
+src-tauri/gen
+*.secret.json
+*.vault
+*.vault.bak
+extension/config.js
+extension/wasm/
+core-wasm/target/
+extension/test/fixtures/
+
+# Segredos e dados locais — nunca versionar
+.env
+.env.*
+*.pem
+*.key
+*.jks
+*.keystore
+local.properties
+google-services.json
+drive.token
+biometria.blob
+
+# Ferramentas e artefatos locais
+.claude/
+*.log
+.cargo-check.log
+.npm.log
+
+# O site de privacidade tem repositório próprio (RKXP-Software/vault-site)
+site/

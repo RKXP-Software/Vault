@@ -1,0 +1,52 @@
+<!doctype html>
+<!-- Só para testes: páginas de login parecidas com a da HBO Max e com sites que usam Shadow DOM.
+     Servir a raiz do projeto (python -m http.server 8089) e abrir /extension/test/content-harness.html?session=1 -->
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <title>Entre (teste do menu em linha)</title>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #111; color: #fff; font: 16px system-ui, sans-serif; }
+      .card { width: 520px; padding: 28px; border-radius: 10px; background: #222; }
+      input { width: 100%; padding: 14px; font-size: 16px; border: 2px solid #4a90d9; border-radius: 4px; background: #000; color: #fff; box-sizing: border-box; }
+      label { display: block; margin: 10px 0 6px; font-weight: 600; }
+      .wrap { position: relative; }
+      /* Simula o ícone de outro gerenciador de senhas no canto direito do campo. */
+      #other-manager { position: absolute; right: 10px; top: 50%; width: 30px; height: 20px; margin-top: -10px; border-radius: 10px; background: #1ec8a5; }
+      button { margin-top: 14px; padding: 12px 20px; }
+    </style>
+    <script type="module" src="./harness-mock.js"></script>
+  </head>
+  <body data-content>
+    <form class="card" id="f" onsubmit="return false">
+      <h2>Entre</h2>
+      <label for="sign-in-phoneEmail-input">Endereço de e-mail ou número de celular</label>
+      <gi-form-input>
+        <div class="wrap">
+          <input id="sign-in-phoneEmail-input" name="phoneEmail" type="email" autocomplete="email" required />
+          <div id="other-manager" title="outro gerenciador"></div>
+        </div>
+      </gi-form-input>
+      <div id="step2" hidden>
+        <label for="pw">Senha</label>
+        <input id="pw" type="password" />
+      </div>
+      <button id="next" type="button" onclick="document.getElementById('step2').hidden = false">Continuar</button>
+    </form>
+    <div class="card" style="margin-top: 16px">
+      <label>Campo dentro de Shadow DOM aberto</label>
+      <login-box></login-box>
+    </div>
+    <script>
+      customElements.define(
+        'login-box',
+        class extends HTMLElement {
+          connectedCallback() {
+            const root = this.attachShadow({ mode: 'open' })
+            root.innerHTML = '<style>input{width:100%;padding:14px;font-size:16px;border:2px solid #4a90d9;border-radius:4px;background:#000;color:#fff;box-sizing:border-box}</style><input id="shadow-user" type="text" name="username" autocomplete="username" /><input id="shadow-pw" type="password" style="margin-top:8px" />'
+          }
+        },
+      )
+    </script>
+  </body>
+</html>

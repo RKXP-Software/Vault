@@ -1,0 +1,47 @@
+[package]
+name = "vault"
+version = "0.1.0"
+description = "Cofre de senhas cifrado para Windows e Android"
+edition = "2021"
+
+[lib]
+name = "vault_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+vault-core = { path = "../core" }
+uuid = "1"
+zeroize = "1"
+tauri-plugin-opener = "2"
+# Sync com o Google Drive: HTTPS (TLS), PKCE e codificação. O conteúdo já vai cifrado pelo núcleo.
+ureq = { version = "2", default-features = false, features = ["tls", "json"] }
+sha2 = "0.10"
+base64 = "0.22"
+rand = "0.8"
+
+# Proteção da chave secreta guardada no aparelho (DPAPI do Windows).
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.59", features = ["Win32_Security_Cryptography", "Win32_Foundation"] }
+
+# Desktop: gera o QR code de pareamento do celular.
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+qrcode = { version = "0.14", default-features = false, features = ["svg"] }
+
+# Android: leitura do QR code pela câmera; chave do Keystore (protege a chave secreta e o token do
+# Drive) e desbloqueio por biometria.
+[target.'cfg(target_os = "android")'.dependencies]
+tauri-plugin-barcode-scanner = "=2.4.6"
+tauri-plugin-vault-keystore = { path = "plugins/keystore" }
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
+panic = "abort"
+strip = true

@@ -1,0 +1,302 @@
+/* Mesmo visual do app Vault (claro/escuro pelo sistema), com mais respiro. */
+
+:root {
+  --bg: #ffffff;
+  --bg-subtle: #f6f8fa;
+  --bg-inset: #eef1f4;
+  --fg: #1f2328;
+  --fg-muted: #59636e;
+  --border: #d1d9e0;
+  --accent: #0969da;
+  --accent-soft: #0969da1f;
+  --danger: #cf222e;
+  --ok: #1a7f37;
+  --btn-hover: #e7ebef;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1117;
+    --bg-subtle: #151b23;
+    --bg-inset: #010409;
+    --fg: #e6edf3;
+    --fg-muted: #9198a1;
+    --border: #3d444d;
+    --accent: #4493f8;
+    --accent-soft: #4493f826;
+    --danger: #f85149;
+    --ok: #3fb950;
+    --btn-hover: #262c36;
+    color-scheme: dark;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  width: 420px;
+  min-height: 260px;
+  max-height: 600px;
+  margin: 0;
+  overflow-y: auto;
+  font: 14px/1.4 system-ui, -apple-system, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.muted {
+  color: var(--fg-muted);
+}
+
+/* ---------- barra superior ---------- */
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-subtle);
+}
+.top img {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+}
+.top .title {
+  font-size: 16px;
+  font-weight: 700;
+}
+.spacer {
+  flex: 1;
+}
+
+/* ---------- botões ---------- */
+
+.btn {
+  padding: 7px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-subtle);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn:hover:not(:disabled) {
+  background: var(--btn-hover);
+}
+.btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+.btn.primary:hover:not(:disabled) {
+  filter: brightness(1.1);
+  background: var(--accent);
+}
+.btn.small {
+  padding: 6px 12px;
+  font-size: 13px;
+}
+.btn.icon {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+  font-size: 15px;
+}
+.link {
+  background: none;
+  border: 0;
+  padding: 4px 0;
+  color: var(--accent);
+  cursor: pointer;
+}
+.link:hover {
+  text-decoration: underline;
+}
+
+/* ---------- telas de pareamento e desbloqueio ---------- */
+
+.view {
+  padding: 24px 22px;
+}
+.view h1 {
+  margin: 0 0 6px;
+  font-size: 20px;
+}
+.view p {
+  margin: 0 0 18px;
+  line-height: 1.55;
+}
+.view .btn.primary {
+  width: 100%;
+  padding: 10px 14px;
+}
+.view .link {
+  display: block;
+  margin: 14px auto 0;
+}
+
+input[type='text'],
+input[type='password'],
+input[type='search'],
+textarea {
+  width: 100%;
+  padding: 10px 13px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  outline: none;
+}
+input:focus,
+textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+textarea {
+  min-height: 96px;
+  resize: vertical;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 13px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.lbl {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fg-muted);
+}
+
+.msg {
+  margin: 12px 16px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow-wrap: anywhere;
+}
+.view .msg {
+  margin: 0 0 14px;
+}
+.msg.err {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+.msg.ok {
+  border-color: var(--ok);
+  color: var(--ok);
+}
+.msg.warn {
+  border-color: #9a6700;
+  color: #9a6700;
+}
+
+/* ---------- lista de registros ---------- */
+
+.search {
+  padding: 14px 16px 8px;
+}
+.section {
+  padding: 14px 18px 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.entry {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+  border-top: 1px solid var(--border);
+}
+.entry:first-of-type {
+  border-top: 0;
+}
+.entry:hover {
+  background: var(--bg-subtle);
+}
+.entry .avatar {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}
+.entry .text {
+  flex: 1;
+  min-width: 0;
+}
+.entry .name,
+.entry .sub {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.entry .name {
+  font-size: 15px;
+  font-weight: 600;
+}
+.entry .sub {
+  font-size: 13px;
+  color: var(--fg-muted);
+}
+.entry .acts {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+}
+.entry .acts .btn.small {
+  min-height: 32px;
+}
+.entry .acts .btn.small:not(.primary) {
+  width: 32px;
+  padding: 0;
+  font-size: 14px;
+}
+.empty {
+  padding: 22px 18px;
+  color: var(--fg-muted);
+  text-align: center;
+}
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+  align-items: center;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--fg-muted);
+}

@@ -1,0 +1,832 @@
+/* Vault — mesmo visual do NOTEx (claro padrão; escuro via [data-theme='dark'] no <html>). */
+
+:root {
+  --font-ui: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', Consolas, 'Liberation Mono', monospace;
+  --sidebar-width: 300px;
+
+  --bg: #ffffff;
+  --bg-subtle: #f6f8fa;
+  --bg-inset: #eef1f4;
+  --fg: #1f2328;
+  --fg-muted: #59636e;
+  --border: #d1d9e0;
+  --accent: #0969da;
+  --accent-soft: #0969da1f;
+  --active-line: #f2f6fc;
+  --danger: #cf222e;
+  --ok: #1a7f37;
+  --warn: #9a6700;
+  --btn-hover: #e7ebef;
+  --btn-active: #dbe4ee;
+  --shadow: 0 8px 24px #1f232826;
+  --scrollbar-thumb: #c1c8cf;
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --bg: #0d1117;
+  --bg-subtle: #151b23;
+  --bg-inset: #010409;
+  --fg: #e6edf3;
+  --fg-muted: #9198a1;
+  --border: #3d444d;
+  --accent: #4493f8;
+  --accent-soft: #4493f826;
+  --active-line: #161b22;
+  --danger: #f85149;
+  --ok: #3fb950;
+  --warn: #d29922;
+  --btn-hover: #262c36;
+  --btn-active: #2f3742;
+  --shadow: 0 8px 24px #01040999;
+  --scrollbar-thumb: #3d444d;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+#app,
+#app-main {
+  height: 100%;
+}
+
+#app-main {
+  display: flex;
+  flex-direction: column;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 6px;
+  border: 2px solid var(--bg);
+}
+
+.spacer {
+  flex: 1;
+}
+.muted {
+  color: var(--fg-muted);
+}
+
+/* ---------- botões e campos ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-subtle);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn:hover:not(:disabled) {
+  background: var(--btn-hover);
+}
+.btn:active:not(:disabled) {
+  background: var(--btn-active);
+}
+.btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.btn.primary:hover:not(:disabled) {
+  filter: brightness(1.1);
+  background: var(--accent);
+}
+.btn.danger {
+  color: var(--danger);
+}
+.btn.small {
+  padding: 2px 8px;
+  font-size: 12px;
+}
+.btn.icon {
+  padding: 5px 9px;
+}
+.link {
+  background: none;
+  border: 0;
+  padding: 4px 0;
+  color: var(--accent);
+  cursor: pointer;
+  text-align: left;
+}
+.link:hover {
+  text-decoration: underline;
+}
+
+input[type='text'],
+input[type='password'],
+input[type='email'],
+input[type='search'],
+textarea {
+  width: 100%;
+  padding: 6px 9px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  outline: none;
+}
+input:focus,
+textarea:focus,
+.btn:focus-visible,
+.row:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+textarea {
+  resize: vertical;
+  font-family: var(--font-mono);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+.lbl {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--fg-muted);
+}
+.hint {
+  font-size: 12px;
+  color: var(--fg-muted);
+}
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 6px 0 12px;
+  cursor: pointer;
+}
+.check.inline {
+  margin: 0;
+  align-items: center;
+}
+.form-error {
+  margin: 4px 0 12px;
+  padding: 8px 10px;
+  border: 1px solid var(--danger);
+  border-radius: 6px;
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 8%, transparent);
+}
+.actions {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+/* ---------- medidor de força ---------- */
+
+.meter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: -4px 0 10px;
+  min-height: 14px;
+}
+.meter-bar {
+  flex: 1;
+  height: 5px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--c, var(--border)) calc(var(--lvl, 0) * 25%), var(--bg-inset) 0);
+}
+.meter-bar[data-lvl='1'] {
+  --c: var(--danger);
+}
+.meter-bar[data-lvl='2'] {
+  --c: var(--warn);
+}
+.meter-bar[data-lvl='3'],
+.meter-bar[data-lvl='4'] {
+  --c: var(--ok);
+}
+.meter-txt {
+  width: 64px;
+  font-size: 12px;
+  color: var(--fg-muted);
+}
+
+/* ---------- telas de entrada ---------- */
+
+.auth {
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 6vh 16px 24px;
+  background: var(--bg-subtle);
+}
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+}
+.auth-card h1 {
+  margin: 10px 0 4px;
+  font-size: 20px;
+}
+.auth-card p {
+  margin: 0 0 18px;
+  line-height: 1.5;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--fg-muted);
+}
+.keybox {
+  margin-bottom: 16px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-subtle);
+}
+.key {
+  display: block;
+  margin: 6px 0;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  word-break: break-all;
+  user-select: all;
+}
+
+/* ---------- barra de ferramentas / status ---------- */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-subtle);
+}
+.tb-brand {
+  font-weight: 700;
+  margin-right: 4px;
+}
+.toolbar input[type='search'] {
+  max-width: 280px;
+}
+.statusbar {
+  display: flex;
+  gap: 14px;
+  padding: 3px 10px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-subtle);
+  color: var(--fg-muted);
+  font-size: 12px;
+}
+
+/* ---------- corpo: lista + detalhe ---------- */
+
+#body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+#sidebar {
+  width: var(--sidebar-width);
+  flex: none;
+  overflow-y: auto;
+  border-right: 1px solid var(--border);
+  background: var(--bg-subtle);
+}
+.list {
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 7px 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+.row:hover {
+  background: var(--btn-hover);
+}
+.row.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.avatar {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+}
+.row-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.row-title,
+.row-sub {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.row-title {
+  font-weight: 600;
+}
+.row-sub {
+  font-size: 12px;
+  color: var(--fg-muted);
+}
+.empty-list {
+  padding: 18px 10px;
+  color: var(--fg-muted);
+  text-align: center;
+}
+.detail {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 20px 28px;
+}
+.empty {
+  height: 100%;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  color: var(--fg-muted);
+}
+.empty-icon {
+  font-size: 40px;
+  opacity: 0.6;
+}
+.pane {
+  max-width: 640px;
+}
+.pane-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.pane-head h2 {
+  margin: 0;
+  font-size: 20px;
+  overflow-wrap: anywhere;
+}
+.row-actions {
+  display: inline-flex;
+  gap: 6px;
+  flex: none;
+}
+.row-actions.left {
+  margin-top: 2px;
+}
+.info {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.info-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 3px;
+}
+.val {
+  overflow-wrap: anywhere;
+  font-size: 14px;
+}
+.val.mono {
+  font-family: var(--font-mono);
+}
+.val.pre {
+  white-space: pre-wrap;
+}
+.meta {
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--fg-muted);
+}
+.gen {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+}
+.gen-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.gen-row.wrap {
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 6px;
+}
+.gen-row input[type='range'] {
+  flex: 1;
+}
+.gen-len {
+  width: 24px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.back {
+  display: none;
+  margin-bottom: 12px;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 38px;
+  transform: translateX(-50%);
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--fg);
+  color: var(--bg);
+  box-shadow: var(--shadow);
+  z-index: 10;
+}
+.toast.err {
+  background: var(--danger);
+  color: #fff;
+  border-color: var(--danger);
+}
+
+/* ---------- celular ---------- */
+
+@media (max-width: 700px) {
+  #sidebar {
+    width: 100%;
+    border-right: 0;
+  }
+  .detail {
+    display: none;
+    padding: 14px 16px;
+  }
+  #body.show-detail #sidebar {
+    display: none;
+  }
+  #body.show-detail .detail {
+    display: block;
+  }
+  .back {
+    display: inline-flex;
+  }
+  /* Itens da lista maiores: alvo de toque confortável e texto mais legível. */
+  .list {
+    padding: 8px;
+    gap: 6px;
+  }
+  .row {
+    gap: 14px;
+    padding: 14px 12px;
+    min-height: 68px;
+    border-radius: 10px;
+    border-color: var(--border);
+    background: var(--bg);
+  }
+  .avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    font-size: 19px;
+  }
+  .row-title {
+    font-size: 17px;
+  }
+  .row-sub {
+    font-size: 14px;
+    margin-top: 2px;
+  }
+  /* ~10% mais alta que no desktop, com alvos de toque maiores. */
+  .toolbar {
+    padding: max(9px, env(safe-area-inset-top)) 10px 9px;
+  }
+  .toolbar .btn,
+  .toolbar input[type='search'] {
+    min-height: 40px;
+  }
+  /* Respeita a barra de navegação do Android e deixa o texto legível. */
+  .statusbar {
+    padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+    font-size: 13px;
+    color: var(--fg);
+    background: var(--bg-inset);
+  }
+  .tb-brand {
+    display: none;
+  }
+  .auth {
+    padding-top: max(4vh, env(safe-area-inset-top));
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .auth {
+    background: #fff;
+    padding: 0;
+  }
+  .auth-card {
+    border: 0;
+    box-shadow: none;
+  }
+  html,
+  body {
+    overflow: visible;
+    height: auto;
+  }
+}
+
+.demo-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 3px 10px;
+  background: var(--warn);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ---------- diálogo (Nuvem) ---------- */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: #01040999;
+}
+.dialog {
+  width: 100%;
+  max-width: 440px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+}
+.dialog h2 {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+.actions.end {
+  justify-content: flex-end;
+}
+#st-cloud {
+  max-width: 50vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- telas de entrada: botão principal em largura total, links numa linha própria ---------- */
+
+.auth-card .form > .btn {
+  width: 100%;
+  padding: 9px 12px;
+  font-weight: 600;
+}
+.auth-card .form > .link {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+.auth-card .form > .link:disabled {
+  opacity: 0.6;
+  cursor: default;
+  text-decoration: none;
+}
+
+/* Mensagens de erro longas (URLs) não podem vazar do cartão/diálogo. */
+.form-error {
+  overflow-wrap: anywhere;
+}
+
+/* ---------- ícone do app dentro da interface ---------- */
+
+.brand-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  flex: none;
+}
+.tb-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.auth-card .brand-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+}
+.empty-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 8px;
+  border-radius: 18px;
+  opacity: 0.9;
+  font-size: 0;
+}
+
+/* ---------- segurança / diálogo ---------- */
+
+.spacer-sm {
+  height: 10px;
+}
+.dialog h3 {
+  margin: 18px 0 6px;
+  font-size: 14px;
+}
+.dialog {
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+}
+
+@media (max-width: 700px) {
+  /* Barra superior no celular: só ícones nos botões secundários, para tudo caber. */
+  .btn-label {
+    display: none;
+  }
+  .toolbar {
+    gap: 6px;
+  }
+  .toolbar input[type='search'] {
+    min-width: 0;
+    flex: 1;
+  }
+}
+
+/* ---------- plano B do login: colar o endereço da página de retorno ---------- */
+
+.paste-box {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  text-align: left;
+}
+.paste-box .hint {
+  margin: 0 0 8px;
+}
+.paste-row {
+  display: flex;
+  gap: 8px;
+}
+.paste-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ---------- QR code de pareamento ---------- */
+
+.qr {
+  width: fit-content;
+  max-width: 100%;
+  margin: 12px auto 4px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #fff;
+  line-height: 0;
+}
+.qr svg {
+  display: block;
+  width: min(280px, 100%);
+  height: auto;
+}
+.hint.center {
+  text-align: center;
+}
+.actions.wrap {
+  flex-wrap: wrap;
+}
+.auth-card .form > .link + .link {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 0;
+}
+
+@media (max-width: 700px) {
+  /* A marca ocupa espaço demais na barra do celular (a regra geral de .tb-brand vem depois da outra). */
+  .toolbar .tb-brand {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .toolbar .spacer {
+    display: none;
+  }
+  .toolbar input[type='search'] {
+    max-width: none;
+  }
+}
+
+/* ---------- rodapé ---------- */
+
+.st-short {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  /* Uma linha só: contagem à esquerda, estado da nuvem no meio, bloqueio à direita. */
+  .statusbar {
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+  }
+  .statusbar #st-count {
+    flex: none;
+  }
+  .statusbar #st-cloud {
+    flex: 1;
+    min-width: 0;
+    max-width: none;
+    text-align: center;
+  }
+  .st-long {
+    display: none;
+  }
+  .st-short {
+    display: inline;
+    flex: none;
+  }
+  .statusbar .spacer {
+    display: none;
+  }
+}

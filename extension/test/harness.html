@@ -1,0 +1,22 @@
+<!doctype html>
+<!-- Só para testes: roda o popup numa página comum, com a API `chrome` simulada (ver harness-mock.js).
+     Servir a raiz do projeto (ex.: python -m http.server 8089) e abrir /extension/test/harness.html. -->
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <title>Vault (teste do popup)</title>
+    <link rel="stylesheet" href="../popup.css" />
+    <style>
+      body { margin: 0 auto; }
+      #login-test { width: 360px; margin: 12px auto; padding: 8px; border: 1px dashed #888; font: 12px sans-serif; }
+    </style>
+    <script type="module" src="./harness-mock.js"></script>
+  </head>
+  <body data-popup>
+    <div id="app"></div>
+    <form id="login-test" onsubmit="return false">
+      <b>Formulário de teste do preenchimento</b><br />
+      <input id="u" type="text" placeholder="usuário" /> <input id="p" type="password" placeholder="senha" />
+    </form>
+  </body>
+</html>
