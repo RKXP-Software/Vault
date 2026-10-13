@@ -48,7 +48,7 @@ npm run apk          # Android (APK assinado, arm64) → distribuicao/v<versão>
 
 - Os dois levam as credenciais do Google embutidas (`src-tauri/google.secret.json`): quem instalar consegue extraí-las.
   Para apps instalados o Google trata esse segredo como não confidencial, mas use credenciais próprias em builds públicos.
-- A chave de assinatura do APK é criada na primeira vez em `%USERPROFILE%\.vaultault-release.jks` (senha em
+- A chave de assinatura do APK é criada na primeira vez em `%USERPROFILE%\.vault\vault-release.jks` (senha em
   `src-tauri/gen/android/keystore.properties`, fora do git). **Guarde uma cópia**: sem ela não dá para atualizar o app instalado.
 - Um APK de release (chave própria) não instala por cima de um APK de depuração: desinstale o de depuração antes.
 
